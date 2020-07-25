@@ -27,3 +27,8 @@ hs_err_pid*
 src/test
 .idea
 *.iml
+*.properties
+*.txt
+*.template
+output
+src/main/java/common/io
