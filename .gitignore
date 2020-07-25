@@ -32,3 +32,4 @@ src/test
 *.template
 output
 src/main/java/common/io
+*.json
