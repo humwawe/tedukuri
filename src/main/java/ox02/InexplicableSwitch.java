@@ -20,7 +20,7 @@ public class InexplicableSwitch {
             }
             res = Math.min(res, tmp);
         }
-        if (res == Integer.MAX_VALUE) {
+        if (res > 6) {
             out.println(-1);
         } else {
             out.println(res);
@@ -36,7 +36,7 @@ public class InexplicableSwitch {
         }
         int res = 0;
         for (int i = 0; i < 5; i++) {
-            if ((st >> i & 1) == 1) {
+            if ((st >> i & 1) == 0) {
                 res += 1;
                 b[0][i] ^= 1;
                 b[1][i] ^= 1;
@@ -50,7 +50,7 @@ public class InexplicableSwitch {
         }
         for (int i = 1; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (b[i - 1][j] == 1) {
+                if (b[i - 1][j] == 0) {
                     res += 1;
                     b[i - 1][j] ^= 1;
                     b[i][j] ^= 1;
@@ -65,7 +65,7 @@ public class InexplicableSwitch {
             }
         }
         for (int i = 0; i < 5; i++) {
-            if (b[4][i] == 1) {
+            if (b[4][i] == 0) {
                 return -1;
             }
         }
