@@ -22,7 +22,12 @@ public class ThePilotsBrothersRefrigerator {
             if (cnt >= res) {
                 continue;
             }
-            int[][] b = a.clone();
+            int[][] b = new int[4][4];
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    b[i][j] = a[i][j];
+                }
+            }
             for (int i = 0; i < 16; i++) {
                 if ((st >> i & 1) == 1) {
                     int x = i / 4;
@@ -31,7 +36,9 @@ public class ThePilotsBrothersRefrigerator {
                         b[x][j] ^= 1;
                     }
                     for (int j = 0; j < 4; j++) {
-                        b[j][y] ^= 1;
+                        if (j != x) {
+                            b[j][y] ^= 1;
+                        }
                     }
                 }
             }
@@ -53,7 +60,7 @@ public class ThePilotsBrothersRefrigerator {
             if ((idx >> i & 1) == 1) {
                 int x = i / 4;
                 int y = i % 4;
-                out.println(x + " " + y);
+                out.println(x + 1 + " " + (y + 1));
             }
         }
     }
