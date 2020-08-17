@@ -31,5 +31,5 @@ src/test
 *.txt
 *.template
 output
-src/main/java/common/io
+
 *.json
