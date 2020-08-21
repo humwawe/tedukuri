@@ -3,7 +3,7 @@ package ox01;
 import common.io.InputReader;
 import common.io.OutputWriter;
 
-public class AXorB {
+public class APowB {
     public void solve(int testNumber, InputReader in, OutputWriter out) {
         int a = in.nextInt();
         int b = in.nextInt();
