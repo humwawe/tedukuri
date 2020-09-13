@@ -1,4 +1,4 @@
-package ox18;
+package ox17;
 
 import common.io.InputReader;
 import common.io.OutputWriter;
