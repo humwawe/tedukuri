@@ -23,26 +23,19 @@ public class Necklace {
         int j = 1;
         while (i <= len && j <= len) {
             int k = 0;
-            while (k < len) {
-                if (str.charAt(i + k) == str.charAt(j + k)) {
-                    k++;
-                } else {
-                    break;
-                }
+            while (k < len && str.charAt(i + k) == str.charAt(j + k)) {
+                k++;
             }
             if (k == len) {
                 break;
             }
             if (str.charAt(i + k) > str.charAt(j + k)) {
                 i = i + k + 1;
-                if (i == j) {
-                    i++;
-                }
             } else {
                 j = j + k + 1;
-                if (i == j) {
-                    j++;
-                }
+            }
+            if (i == j) {
+                i++;
             }
         }
         int res = Math.min(i, j);
