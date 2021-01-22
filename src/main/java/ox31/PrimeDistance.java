@@ -1,4 +1,4 @@
-package ox30;
+package ox31;
 
 import common.io.InputReader;
 import common.io.OutputWriter;
@@ -74,3 +74,4 @@ public class PrimeDistance {
         }
     }
 }
+
