@@ -46,6 +46,9 @@ public class AngelDoll {
 
     private void cdq(int l, int r) {
         int mid = l + r >> 1;
+        if (r <= n) {
+            return;
+        }
         if (l < mid) {
             cdq(l, mid);
         }
@@ -114,6 +117,9 @@ public class AngelDoll {
 
     void reset(int y) {
         for (; y < maxY; y += lowbit(y)) {
+            if (t[y] == -inf) {
+                return;
+            }
             t[y] = -inf;
         }
     }
