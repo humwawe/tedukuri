@@ -4,81 +4,70 @@ import common.io.InputReader;
 import common.io.OutputWriter;
 
 public class MaximumXorAnd {
-    int idx = 1;
     int N = 600010;
-    int M = N * 50;
-    int[] trie = new int[M];
+    int M = N * 25;
+    int[] s = new int[N];
+    int[][] tr = new int[2][M];
+    int[] root = new int[N];
     int[] maxId = new int[M];
-    int[] s;
-    int[] root;
+    int idx;
+    int n;
+    int m;
 
     public void solve(int testNumber, InputReader in, OutputWriter out) {
-        int n = in.nextInt();
-        int m = in.nextInt();
-        root = new int[n + m];
-        s = new int[n + m];
-        int cur = 0;
-        for (int i = 0; i < n; ++i) {
+        n = in.nextInt();
+        m = in.nextInt();
+        maxId[0] = -1;
+        root[0] = ++idx;
+        insert(0, 23, 0, root[0]);
+
+        for (int i = 1; i <= n; i++) {
             int x = in.nextInt();
-            s[cur] = cur >= 1 ? (s[cur - 1] ^ x) : x;
-            insert(s[cur], cur - 1, cur);
-            cur++;
+            s[i] = s[i - 1] ^ x;
+            root[i] = ++idx;
+            insert(i, 23, root[i - 1], root[i]);
         }
-        for (int i = 0; i < m; ++i) {
-            String s = in.next();
-            if (s.equals("A")) {
+        for (int i = 0; i < m; i++) {
+            char c = in.nextCharacter();
+            if (c == 'A') {
                 int x = in.nextInt();
-                this.s[cur] = this.s[cur - 1] ^ x;
-                insert(this.s[cur], cur - 1, cur);
-                cur++;
-
+                n++;
+                s[n] = s[n - 1] ^ x;
+                root[n] = ++idx;
+                insert(n, 23, root[n - 1], root[n]);
             } else {
-                int l = in.nextInt() - 1;
-                int r = in.nextInt() - 1;
-                int v = in.nextInt();
-                int val = v ^ this.s[cur - 1];
-                out.println(ask(r - 1, val, l - 1));
-            }
-        }
-
-    }
-
-    void insert(int x, int v1, int v2) {
-        root[v2] = idx;
-        idx += 2;
-        int p = root[v2];
-        int cur = (v1 != -1 ? root[v1] : 0);
-        for (int w = 23; w >= 0; --w) {
-            int g = ((x & (1 << w)) != 0) ? 1 : 0;
-            if (cur != 0) {
-                trie[p + (g ^ 1)] = trie[cur + (g ^ 1)];
-            }
-            trie[p + g] = idx;
-            idx += 2;
-            p = trie[p + g];
-            maxId[p >> 1] = v2;
-            if (cur != 0) {
-                cur = trie[cur + g];
+                int l = in.nextInt();
+                int r = in.nextInt();
+                int x = in.nextInt();
+                out.println(ask(root[r - 1], s[n] ^ x, l - 1));
             }
         }
     }
 
-    int ask(int v1, int val, int l) {
-        if (v1 == -1) {
-            return val;
-        }
-        int p = root[v1];
-        int ans = 0;
-
-        for (int w = 23; w >= 0; --w) {
-            int g = ((val & (1 << w)) != 0) ? 0 : 1;
-            if (trie[p + g] != 0 && maxId[trie[p + g] >> 1] >= l) {
-                p = trie[p + g];
-                ans |= 1 << w;
+    private int ask(int root, int val, int l) {
+        int p = root;
+        for (int i = 23; i >= 0; i--) {
+            int v = val >> i & 1;
+            if (maxId[tr[v ^ 1][p]] >= l) {
+                p = tr[v ^ 1][p];
             } else {
-                p = trie[p + 1 - g];
+                p = tr[v][p];
             }
         }
-        return ans;
+        return val ^ s[maxId[p]];
+    }
+
+    private void insert(int i, int k, int p, int q) {
+        if (k < 0) {
+            maxId[q] = i;
+            return;
+        }
+        int v = s[i] >> k & 1;
+        if (p != 0) {
+            tr[v ^ 1][q] = tr[v ^ 1][p];
+        }
+        tr[v][q] = ++idx;
+        insert(i, k - 1, tr[v][p], tr[v][q]);
+        maxId[q] = Math.max(maxId[tr[0][q]], maxId[tr[1][q]]);
     }
 }
