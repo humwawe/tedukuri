@@ -23,8 +23,8 @@ public class Race {
     int res;
     int[] dis;
     int[] dep;
-    Map<Integer, Integer> map = new HashMap<>();
-    Map<Integer, Integer> tmpMap = new HashMap<>();
+    Map<Integer, Integer> map;
+    Map<Integer, Integer> tmpMap;
 
     public void solve(int testNumber, InputReader in, OutputWriter out) {
         n = in.nextInt();
@@ -69,7 +69,7 @@ public class Race {
             }
             dep[j] = dep[u] + 1;
             dis[j] = dis[u] + w[i];
-            tmpMap.clear();
+            tmpMap = new HashMap<>();
             getDis(j, j);
             for (Integer integer : tmpMap.keySet()) {
                 map.put(integer, Math.min(tmpMap.get(integer), map.getOrDefault(integer, inf)));
@@ -106,7 +106,7 @@ public class Race {
         vis[u] = true;
         dep[u] = 0;
         dis[u] = 0;
-        map.clear();
+        map = new HashMap<>();
         map.put(0, 0);
         cal(u);
         for (int i = h[u]; i != -1; i = ne[i]) {
