@@ -1,46 +1,40 @@
-package ox45;
+package ox49;
 
 import common.io.InputReader;
 import common.io.OutputWriter;
 
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Tree {
+public class Race {
     int n, k;
     int[] h;
     int[] e;
     int[] ne;
     int[] w;
+    int inf = 0x3f3f3f3f;
     int idx;
     int root;
     int[] size;
     int[] dp;
-    boolean[] vis;
-    int[] color;
     int sum;
+    boolean[] vis;
     int res;
     int[] dis;
-    Integer[] help;
-    int cnt;
-    int[] f;
+    int[] dep;
+    Map<Integer, Integer> map = new HashMap<>();
+    Map<Integer, Integer> tmpMap = new HashMap<>();
 
     public void solve(int testNumber, InputReader in, OutputWriter out) {
         n = in.nextInt();
         k = in.nextInt();
-        if (n == 0 && k == 0) {
-            return;
-        }
         h = new int[n];
         Arrays.fill(h, -1);
         idx = 0;
         e = new int[2 * n];
         ne = new int[2 * n];
         w = new int[2 * n];
-        size = new int[n];
-        dp = new int[n];
-        vis = new boolean[n];
-        res = 0;
         for (int i = 0; i < n - 1; i++) {
             int a = in.nextInt();
             int b = in.nextInt();
@@ -48,22 +42,71 @@ public class Tree {
             add(a, b, v);
             add(b, a, v);
         }
-
+        size = new int[n];
+        dp = new int[n];
+        vis = new boolean[n];
         sum = n;
         root = -1;
-        getRoot(0, 0);
+        getRoot(n / 2, n / 2);
+        res = inf;
 
         dis = new int[n];
-        help = new Integer[n];
-        f = new int[n];
-        color = new int[n];
+        dep = new int[n];
         dfs(root);
-        out.println(res);
+
+        if (res == inf) {
+            out.println(-1);
+        } else {
+            out.println(res);
+        }
+    }
+
+    private void cal(int u) {
+        for (int i = h[u]; i != -1; i = ne[i]) {
+            int j = e[i];
+            if (vis[j]) {
+                continue;
+            }
+            dep[j] = dep[u] + 1;
+            dis[j] = dis[u] + w[i];
+            tmpMap.clear();
+            getDis(j, j);
+            for (Integer integer : tmpMap.keySet()) {
+                map.put(integer, Math.min(tmpMap.get(integer), map.getOrDefault(integer, inf)));
+            }
+        }
+    }
+
+    private void getDis(int u, int pre) {
+        if (dep[u] >= res) {
+            return;
+        }
+        if (!tmpMap.containsKey(dis[u])) {
+            tmpMap.put(dis[u], dep[u]);
+        }
+        if (map.containsKey(k - dis[u])) {
+            res = Math.min(res, dep[u] + map.get(k - dis[u]));
+        }
+        for (int i = h[u]; i != -1; i = ne[i]) {
+            int j = e[i];
+            if (j == pre || vis[j]) {
+                continue;
+            }
+            dep[j] = dep[u] + 1;
+            dis[j] = dis[u] + w[i];
+            if (dis[j] <= k) {
+                getDis(j, u);
+            }
+        }
     }
 
     private void dfs(int u) {
         vis[u] = true;
-        res += cal(u);
+        dep[u] = 0;
+        dis[u] = 0;
+        map.clear();
+        map.put(0, 0);
+        cal(u);
         for (int i = h[u]; i != -1; i = ne[i]) {
             int j = e[i];
             if (vis[j]) {
@@ -73,52 +116,6 @@ public class Tree {
             root = -1;
             getRoot(j, u);
             dfs(root);
-        }
-    }
-
-    private int cal(int u) {
-        dis[u] = 0;
-        cnt = 0;
-        color[u] = u;
-        f[color[u]] = 1;
-        help[cnt++] = u;
-        for (int i = h[u]; i != -1; i = ne[i]) {
-            int j = e[i];
-            if (vis[j]) {
-                continue;
-            }
-            color[j] = j;
-            dis[j] = w[i];
-            f[color[j]] = 0;
-            getDis(j, j);
-        }
-        Arrays.sort(help, 0, cnt, Comparator.comparingInt(x -> dis[x]));
-        int res = 0;
-        int j = cnt - 1;
-        for (int i = 0; i < j; ) {
-            if (dis[help[i]] + dis[help[j]] <= k) {
-                res += j - i - f[color[help[i]]] + 1;
-                f[color[help[i]]]--;
-                i++;
-            } else {
-                f[color[help[j]]]--;
-                j--;
-            }
-        }
-        return res;
-    }
-
-    private void getDis(int u, int pre) {
-        help[cnt++] = u;
-        color[u] = color[pre];
-        f[color[u]]++;
-        for (int i = h[u]; i != -1; i = ne[i]) {
-            int j = e[i];
-            if (j == pre || vis[j]) {
-                continue;
-            }
-            dis[j] = dis[u] + w[i];
-            getDis(j, u);
         }
     }
 
