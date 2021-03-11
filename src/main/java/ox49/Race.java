@@ -47,7 +47,7 @@ public class Race {
         vis = new boolean[n];
         sum = n;
         root = -1;
-        getRoot(n / 2, n / 2);
+        getRoot(0, 0);
         res = inf;
 
         dis = new int[n];
@@ -81,7 +81,9 @@ public class Race {
         if (dep[u] >= res) {
             return;
         }
-        if (!tmpMap.containsKey(dis[u])) {
+        if (tmpMap.containsKey(dis[u])) {
+            tmpMap.put(dis[u], Math.min(dep[u], tmpMap.get(dis[u])));
+        } else {
             tmpMap.put(dis[u], dep[u]);
         }
         if (map.containsKey(k - dis[u])) {
