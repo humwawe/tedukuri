@@ -8,3 +8,5 @@
 [0x30](https://github.com/humwawe/tedukuri/blob/master/0x30.md)
 # 0x40
 [0x40](https://github.com/humwawe/tedukuri/blob/master/0x40.md)
+# 0x50
+[0x50](https://github.com/humwawe/tedukuri/blob/master/0x50.md)
