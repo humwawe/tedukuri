@@ -1,4 +1,4 @@
-package ox56;
+package ox55;
 
 import common.io.InputReader;
 import common.io.OutputWriter;
