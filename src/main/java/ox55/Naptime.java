@@ -31,7 +31,6 @@ public class Naptime {
             }
         }
         int res = f[n - 1 & 1][m][0];
-//        res = Math.max(res, f[n - 1 & 1][m][1]);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < N; j++) {
                 Arrays.fill(f[i][j], -inf);
