@@ -46,7 +46,7 @@ public class ArtilleryPosition {
                 }
             }
         }
-        out.println(f[(n + 2) & 1][0][0]);
+        out.println(f[(n + 1) & 1][0][0]);
     }
 
     private int count(int num) {
