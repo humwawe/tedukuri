@@ -9,8 +9,8 @@ import java.util.TreeSet;
 
 public class TravelByCar {
     int inf = 0x3f3f3f3f;
-    int N = 10;
-    int M = 3;
+    int N = 100005;
+    int M = 20;
     int[] h = new int[N + 5];
     int[] ga = new int[N];
     int[] gb = new int[N];
@@ -46,8 +46,8 @@ public class TravelByCar {
             tmp[3][1] = Math.abs(h[tmp[3][0]] - h[t]);
             set.add(t);
             Arrays.sort(tmp, Comparator.comparingInt(x -> x[1]));
-            ga[i] = tmp[0][0] > N ? 0 : tmp[0][0];
-            gb[i] = tmp[1][0] > N ? 0 : tmp[1][0];
+            gb[i] = tmp[0][0] > N ? 0 : tmp[0][0];
+            ga[i] = tmp[1][0] > N ? 0 : tmp[1][0];
         }
         for (int i = 1; i < n; i++) {
             f[0][i][0] = ga[i];
@@ -147,14 +147,4 @@ public class TravelByCar {
         return new long[]{la, lb};
     }
 
-
-    class Node {
-        int h;
-        int id;
-
-        public Node(int h, int id) {
-            this.h = h;
-            this.id = id;
-        }
-    }
 }
