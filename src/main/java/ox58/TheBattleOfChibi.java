@@ -33,16 +33,21 @@ public class TheBattleOfChibi {
         for (int i = 0; i < n; i++) {
             a[i] = find(a[i]) + 5;
         }
-
         for (int i = 1; i <= m; i++) {
             Arrays.fill(t, 0);
-            add(1, 1);
-            for (int j = 1; j <= n; j++) {
-                f[i][j] = (int) (sum(a[i] - 1) % mod);
+            if (i == 1) {
+                add(1, 1);
+            }
+            for (int j = 0; j < n; j++) {
+                f[i][j] = (int) (sum(a[j] - 1) % mod);
                 add(a[j], f[i - 1][j]);
             }
         }
-
+        long res = 0;
+        for (int i = 0; i < n; i++) {
+            res = (res + f[m][i]) % mod;
+        }
+        out.printf("Case #%d: %d\n", testNumber, res);
     }
 
     int lowbit(int x) {
@@ -50,7 +55,7 @@ public class TheBattleOfChibi {
     }
 
     void add(int x, int c) {
-        for (int i = x; i <= n; i += lowbit(i)) {
+        for (int i = x; i <= n + 5; i += lowbit(i)) {
             t[i] += c;
             t[i] %= mod;
         }
