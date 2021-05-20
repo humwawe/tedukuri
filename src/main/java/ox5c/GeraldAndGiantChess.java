@@ -16,11 +16,12 @@ public class GeraldAndGiantChess {
         h = in.nextInt();
         w = in.nextInt();
         n = in.nextInt();
+        fact();
         for (int i = 0; i < n; i++) {
             a[i][0] = in.nextInt();
             a[i][1] = in.nextInt();
         }
-        Arrays.sort(a, (x, y) -> {
+        Arrays.sort(a, 0, n, (x, y) -> {
             if (x[1] == y[1]) {
                 return x[0] - y[0];
             }
@@ -30,12 +31,12 @@ public class GeraldAndGiantChess {
         a[n][1] = w;
 
         for (int i = 0; i <= n; i++) {
-            f[i] = c(a[i][0] - a[i][1] - 2, a[i][0] - 1);
+            f[i] = c(a[i][0] + a[i][1] - 2, a[i][0] - 1);
             for (int j = 0; j < i; j++) {
                 if (a[j][0] > a[i][0] || a[j][1] > a[j][1]) {
                     continue;
                 }
-                f[i] = (int) (f[i] - (long) f[j] * c(a[i][0] + a[i][1] - a[j][0] - a[j][1], a[i][0] - a[j][0]) % mod);
+                f[i] = (int) ((f[i] - (long) f[j] * c(a[i][0] + a[i][1] - a[j][0] - a[j][1], a[i][0] - a[j][0])) % mod);
             }
         }
         out.println((f[n] + mod) % mod);
@@ -45,12 +46,14 @@ public class GeraldAndGiantChess {
         return (int) (fact[a] * infact[b] % mod * infact[a - b] % mod);
     }
 
-    long[] fact = new long[N];
-    long[] infact = new long[N];
+    int size = (int) (2e5 + 5);
+    long[] fact = new long[size];
+    long[] infact = new long[size];
+
 
     void fact() {
         fact[0] = infact[0] = 1;
-        for (int i = 1; i < N; i++) {
+        for (int i = 1; i < size; i++) {
             fact[i] = fact[i - 1] * i % mod;
             infact[i] = infact[i - 1] * qmi(i, mod - 2, mod) % mod;
         }
