@@ -3,7 +3,9 @@ package ox61;
 import common.io.InputReader;
 import common.io.OutputWriter;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Queue;
 
 public class SortingItAllOut {
     int N = 26;
@@ -26,7 +28,7 @@ public class SortingItAllOut {
         }
         boolean find = false;
         boolean fail = false;
-        for (int i = 0; i < m; i++) {
+        for (int i = 1; i <= m; i++) {
             String s = in.nextString();
             if (find || fail) {
                 continue;
@@ -50,7 +52,38 @@ public class SortingItAllOut {
                     }
                 }
             }
+            t = i;
         }
+        if (fail) {
+            out.printf("Inconsistency found after %d relations.\n", t);
+        } else if (find) {
+            topsort(out);
+        } else {
+            out.println("Sorted sequence cannot be determined.");
+        }
+    }
+
+    private void topsort(OutputWriter out) {
+        Queue<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (deg[i] == 0) {
+                q.add(i);
+            }
+        }
+        out.printf("Sorted sequence determined after %d relations: ", t);
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            out.print((char) ('A' + u));
+            for (int v = 0; v < n; v++) {
+                if (d[u][v] > 0) {
+                    deg[v]--;
+                    if (deg[v] == 0) {
+                        q.add(v);
+                    }
+                }
+            }
+        }
+        out.println(".");
     }
 
     private void floyd() {
