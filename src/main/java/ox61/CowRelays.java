@@ -24,9 +24,9 @@ public class CowRelays {
             Arrays.fill(g[i], inf);
         }
         for (int i = 0; i < m; i++) {
+            int c = in.nextInt();
             int a = mapping(in.nextInt());
             int b = mapping(in.nextInt());
-            int c = mapping(in.nextInt());
             g[a][b] = g[b][a] = Math.min(g[a][b], c);
         }
 
@@ -52,7 +52,7 @@ public class CowRelays {
         for (int l = 0; l < cnt; l++) {
             for (int i = 0; i < cnt; i++) {
                 for (int j = 0; j < cnt; j++) {
-                    tmp[i][j] = Math.min(tmp[i][j], a[i][k] + b[k][j]);
+                    tmp[i][j] = Math.min(tmp[i][j], a[i][l] + b[l][j]);
                 }
             }
         }
