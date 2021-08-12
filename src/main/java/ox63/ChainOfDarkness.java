@@ -41,7 +41,27 @@ public class ChainOfDarkness {
             sum[b]++;
             sum[p] -= 2;
         }
+        dfs(1, -1);
 
+        for (int i = 2; i <= n; i++) {
+            if (sum[i] == 0) {
+                res += m;
+            } else if (sum[i] == 1) {
+                res++;
+            }
+        }
+        out.println(res);
+    }
+
+    private void dfs(int u, int p) {
+        for (int i = h[u]; i != -1; i = ne[i]) {
+            int j = e[i];
+            if (j == p) {
+                continue;
+            }
+            dfs(j, u);
+            sum[u] += sum[j];
+        }
     }
 
     private int lca(int a, int b) {
@@ -83,6 +103,7 @@ public class ChainOfDarkness {
                 for (int k = 1; k < 17; k++) {
                     fa[j][k] = fa[fa[j][k - 1]][k - 1];
                 }
+                queue.add(j);
             }
         }
 
