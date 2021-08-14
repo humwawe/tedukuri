@@ -74,9 +74,9 @@ public class ChainOfDarkness {
             if (d[fa[a][i]] >= d[b]) {
                 a = fa[a][i];
             }
-            if (a == b) {
-                return a;
-            }
+        }
+        if (a == b) {
+            return a;
         }
         for (int i = 16; i >= 0; i--) {
             if (fa[a][i] != fa[b][i]) {
