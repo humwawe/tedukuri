@@ -22,7 +22,7 @@ public class Rendezvous {
     int[] lenCycle = new int[N];
     int[] d = new int[N];
     int[] s = new int[N];
-    int T = 18;
+    int T = 20;
     int[][] f = new int[N][T];
     int num, cnt, p;
     int n, q;
@@ -39,10 +39,10 @@ public class Rendezvous {
         }
 
         for (int i = 1; i <= n; i++) {
-            if (dfn[i] == 0) {
+            if (dfn[i] == 0 && d[i] == 0) {
                 dfs(i);
                 for (int j = 1; j <= p; j++) {
-                    bfs(j);
+                    bfs(s[j]);
                 }
             }
         }
@@ -66,12 +66,19 @@ public class Rendezvous {
         if (ha != hb) {
             int x = d[a] - d[ha];
             int y = d[b] - d[hb];
-            int l = Math.abs(sum[ha] - sum[hb]);
+            int l = (sum[ha] - sum[hb] + lenCycle[in[ha]]) % lenCycle[in[ha]];
             int r = lenCycle[in[ha]] - l;
-
+            if (Math.max(x + l, y) < Math.max(x, y + r)) {
+                return new int[]{x + l, y};
+            } else if (Math.max(x + l, y) > Math.max(x, y + r) || Math.min(x + l, y) > Math.min(x, y + r)) {
+                return new int[]{x, y + r};
+            } else {
+                return new int[]{x + l, y};
+            }
 
         } else {
-            return new int[]{d[a] - d[lca(a, b)], d[b] - d[lca(a, b)]};
+            int dlca = d[lca(a, b)];
+            return new int[]{d[a] - dlca, d[b] - dlca};
         }
 
     }
@@ -126,14 +133,15 @@ public class Rendezvous {
     private void dfs(int u) {
         dfn[u] = ++num;
         for (int i = h[u]; i != -1; i = ne[i]) {
+            if (i % 2 == 1) {
+                continue;
+            }
             int j = e[i];
             if (dfn[j] == 0) {
                 fa[j] = i;
                 dfs(j);
-            }
-            // 考虑自环的话可以取到 dfn[j] >= dfn[u]
-            else if ((i ^ 1) != fa[u] & dfn[j] >= dfn[u]) {
-                getCycle(u, j, i);
+            } else {
+                getCycle(j, u, i);
             }
         }
     }
@@ -145,7 +153,6 @@ public class Rendezvous {
         while (j != u) {
             in[j] = cnt;
             d[j] = 1;
-
             s[++p] = j;
             int nextJ = e[fa[j] ^ 1];
             sum[nextJ] = sum[j] + 1;
