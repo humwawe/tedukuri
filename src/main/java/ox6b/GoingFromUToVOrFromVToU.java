@@ -109,6 +109,10 @@ public class GoingFromUToVOrFromVToU {
                 queue.add(i);
             }
         }
+        if (cnt > 1) {
+            out.println("No");
+            return;
+        }
         while (!queue.isEmpty()) {
             Integer cur = queue.poll();
             cnt = 0;
